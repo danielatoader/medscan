@@ -2,6 +2,7 @@ import pandas as pd
 import pickle
 import numpy as np
 import sklearn as sk
+import pathlib
 from sklearn.cluster import KMeans, AffinityPropagation
 import matplotlib.pyplot as plt
 import nltk
@@ -11,8 +12,11 @@ from tqdm.notebook import tqdm
 class LASAClusters:
 
     @staticmethod
-    def compute_clusters(result=[]):
-        df = pd.read_csv("./ml/Products.txt", sep='\t+', engine='python')
+    def compute_clusters(result=dict()):
+
+        current_path = str(pathlib.Path().resolve())
+        df = pd.read_csv(current_path + '/ml/Products.txt', sep='\t+', engine='python')
+  
         drugNames = df['DrugName']
         drugNames = drugNames.drop_duplicates().dropna()
         random_incides = [np.random.randint(0, len(drugNames)) for _ in range(10)]
@@ -28,7 +32,7 @@ class LASAClusters:
         #         dist = edit_distance(names[i], names[j])
         #         lev_dist[i, j] = lev_dist[j, i] = dist
 
-        file_path = './ml/lev_dist3000.pickle'
+        file_path = current_path + '/ml/lev_dist3000.pickle'
         # pickle.dump(lev_dist, open(file_path, "wb"))
         lev_dist = pickle.load(open(file_path, "rb"))
 
@@ -45,7 +49,7 @@ class LASAClusters:
             exemplar = names[aff_prop.cluster_centers_indices_[cluster_id]]
             members = names[np.nonzero(aff_prop.labels_ == cluster_id)]
 
-            print(f'{cluster_id + 1}. \033[1m{exemplar}\033[0m ({len(members)} members): {", ".join(members)}')
-            result.append(f'{cluster_id + 1}. \033[1m{exemplar}\033[0m ({len(members)} members): {", ".join(members)}')         
+            print(f'{cluster_id + 1}. \033[1m{exemplar}\033[0m ({len(members)} members): {", ".join(members)}')        
+            result[exemplar] = list(members)     
         
         return result

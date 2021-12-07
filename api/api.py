@@ -1,14 +1,21 @@
-import time
-
+import json
 from ml.LASAClusters import LASAClusters
 from db.db import patients
 from flask import Flask, jsonify
+from flask_cors import CORS, cross_origin
+from data import res
 
 app = Flask(__name__)
+CORS(app)
 
-@app.route('/time')
-def get_current_time():
-    return {'time': time.time()}
+@app.route("/", methods=["GET"])
+def get_example():
+    """GET in server"""
+    response = jsonify(message="Simple server is running")
+
+    # Enable Access-Control-Allow-Origin
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
 
 @app.route('/patients', methods=['GET'])
 def get_patients():
@@ -18,9 +25,11 @@ def get_patients():
 
 @app.route('/compute_clusters', methods=['GET'])
 def compute_clusters():
-    result = dict()
-    result['clusters'] = LASAClusters.compute_clusters()
-    return result
+    # result = dict()
+    # result['clusters'] = LASAClusters.compute_clusters()
+    # result = []
+    # result.append(LASAClusters.compute_clusters())
+    return json.dumps(res, indent=4)
 
 @app.route('/scan', methods=['POST'])
 def scan():
