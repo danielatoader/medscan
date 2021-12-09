@@ -31,6 +31,6 @@ def compute_clusters():
     # result.append(LASAClusters.compute_clusters())
     return json.dumps(res, indent=4)
 
-@app.route('/scan', methods=['POST'])
+@app.route('/scan', methods=['GET', 'POST'])
 def scan():
     return 'Pass' + ' first commit'
