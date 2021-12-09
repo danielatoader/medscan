@@ -33,4 +33,4 @@ def compute_clusters():
 
 @app.route('/scan', methods=['POST'])
 def scan():
-    return 'Pass'
+    return 'Pass' + ' first commit'
