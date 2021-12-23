@@ -1,4 +1,5 @@
 import { Button, Stack } from "react-bootstrap";
+import NotMobileAlert from "../../NotMobileAlert";
 import { Navigation } from "../Navigation";
 import { url as lasaScanUrl } from "./LasaScanView";
 import { url as patientMedMatchUrl } from "./PatientMedMatchView";
@@ -7,8 +8,9 @@ interface HomeViewProps {}
 
 const HomeView: React.FC<HomeViewProps> = (props) => {
   return (
-    <>
-      <div style={{ backgroundColor: "#ADD8E6", height: "100vh" }}>
+    <>      
+      <div style={{ backgroundColor: "#ADD8E6", height: "100vh", width: "100vw"}}>
+      <NotMobileAlert />
         <p
           style={{
             width: "100%",

@@ -3,13 +3,18 @@ import { url as lasaScanUrl } from "./views/LasaScanView";
 import { url as patientMedMatchUrl } from "./views/PatientMedMatchView";
 
 interface NavigationProps {
-  activeKey: string
+  activeKey: string;
 }
 
 export const Navigation: React.FC<NavigationProps> = (props) => {
   return (
     <Nav
-      style={{ bottom: 0, position: "absolute", backgroundColor: "white" }}
+      style={{
+        width: "100vw",
+        bottom: 0,
+        position: "fixed",
+        backgroundColor: "white",
+      }}
       className="fixed-bottom"
       variant="pills"
       justify
