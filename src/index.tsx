@@ -4,6 +4,7 @@ import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AppRouter from './AppRouter';
 
+
 ReactDOM.render(
   <React.StrictMode>
     <AppRouter />
