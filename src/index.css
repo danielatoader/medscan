@@ -2,11 +2,10 @@ html {
   overflow: hidden;
 }
 
-
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -16,7 +15,7 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
@@ -30,3 +29,37 @@ code {
 .qr-reader {
   margin: auto;
 }
+
+
+@-webkit-keyframes success-bg {
+  0%, 100% {background-color: #ADD8E6}
+  50% {background-color: green}
+} 
+@keyframes success-bg {
+  0%, 100% {background-color: #ADD8E6}
+  50% {background-color: green}
+} 
+
+.success-bg {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-name: success-bg;
+  animation-name: success-bg;
+}
+
+@-webkit-keyframes error-bg {
+  0%, 100% {background-color: #ADD8E6}
+  50% {background-color: red}
+} 
+@keyframes error-bg {
+  0%, 100% {background-color: #ADD8E6}
+  50% {background-color: red}
+} 
+
+.error-bg {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-name: error-bg;
+  animation-name: error-bg;
+}
+

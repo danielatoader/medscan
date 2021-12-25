@@ -1,16 +1,34 @@
 import NotMobileAlert from "../../NotMobileAlert";
 import Navigation from "../Navigation";
-import { useState } from "react";
-import BarcodeScannerComponent from "react-qr-barcode-scanner";
+import React, { useEffect, useRef, useState } from "react";
+import Scanner from "../Scanner";
+import { playSuccessSound } from "../../utils/sounds";
+import {
+  animateBackgroundError,
+  animateBackgroundSuccess,
+} from "../../utils/animations";
+import fs from "fs";
+import { Button } from "react-bootstrap";
 
 interface LasaScanViewProps {}
 
 const LasaScanView: React.FC<LasaScanViewProps> = (props) => {
-  const [barCodedata, setBarCodeData] = useState<string>("Not Found");
+  const [barCodedata, setBarCodeData] = useState<string>("-");
+
+  const backgroundRef = useRef<HTMLDivElement>(null);
+  const [isScanning, setIsScanning] = useState<boolean>(false);
+
+  useEffect(() => {
+    animateBackgroundSuccess(backgroundRef.current);
+    playSuccessSound();
+  }, [barCodedata]);
 
   return (
     <>
-      <div style={{ backgroundColor: "#ADD8E6", height: "100vh" }}>
+      <div
+        ref={backgroundRef}
+        style={{ backgroundColor: "#ADD8E6", height: "100vh" }}
+      >
         <NotMobileAlert />
         <p
           style={{
@@ -24,29 +42,36 @@ const LasaScanView: React.FC<LasaScanViewProps> = (props) => {
         >
           LASA Scan
         </p>
-        <div style={{ width: "100vw" }}>
-          <p style={{ textAlign: "center" }}>{barCodedata}</p>
-          <div
-            style={{
-              display: "block",
-              width: "60%",
-              height: "50%",
-              margin: "auto",
-            }}
-          >
-            <BarcodeScannerComponent
-              width={"100%"}
-              height={"100%"}
-              delay={500}
-              onUpdate={(err, result) => {
-                if (result) setBarCodeData(result.getText());
-                else setBarCodeData("Not Found");
-                console.log(err);
-              }}
-              onError={(error) => setBarCodeData(error.toString())}
-              facingMode="environment"
-            />
-          </div>
+        <div className="text-center" style={{ width: "100vw" }}>
+          {!isScanning ? (
+            <Button
+              style={{}}
+              size="lg"
+              variant="primary"
+              onClick={() => setIsScanning(true)}
+            >
+              start scanning
+            </Button>
+          ) : (
+            <>
+              <p style={{ textAlign: "center" }}>
+                <b>Last item: </b>
+                {barCodedata}
+              </p>
+              <Scanner
+                onData={(err, result) => {
+                  if (result && result.getText() !== barCodedata) {
+                    setBarCodeData(result.getText());
+                  }
+                  console.log(err);
+                }}
+                onError={(error) => {
+                  setBarCodeData(error.toString());
+                  animateBackgroundError(backgroundRef.current);
+                }}
+              />
+            </>
+          )}
         </div>
       </div>
       <Navigation activeKey={url} />
