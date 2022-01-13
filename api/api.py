@@ -23,7 +23,7 @@ def get_patients():
     result['names'] = patients
     return result
 
-@app.route('/compute_clusters', methods=['POST'])
+@app.route('/check_lasa', methods=['POST'])
 def compute_clusters():
     medication_name = request.form['medicationName'].lower()
     result = dict()
