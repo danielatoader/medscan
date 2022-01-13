@@ -1,7 +1,7 @@
 import json
 from ml.LASAClusters import LASAClusters
 from db.db import patients
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
 from data import res
 
@@ -23,13 +23,16 @@ def get_patients():
     result['names'] = patients
     return result
 
-@app.route('/compute_clusters', methods=['GET'])
+@app.route('/check_lasa', methods=['POST'])
 def compute_clusters():
-    # result = dict()
-    # result['clusters'] = LASAClusters.compute_clusters()
+    medication_name = request.form['medicationName'].lower()
+    result = dict()
+    result['clusters'] = LASAClusters.compute_clusters()
+    result['isLASA'] = True
+    return jsonify(result['isLASA'])
     # result = []
     # result.append(LASAClusters.compute_clusters())
-    return json.dumps(res, indent=4)
+    # return json.dumps(result, indent=4)
 
 @app.route('/scan', methods=['GET', 'POST'])
 def scan():
