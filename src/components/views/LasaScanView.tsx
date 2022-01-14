@@ -7,13 +7,14 @@ import {
   animateBackgroundError,
   animateBackgroundSuccess,
 } from "../../utils/animations";
-import fs from "fs";
 import { Button } from "react-bootstrap";
+import WarningModal from "../modals/WarningModal";
 
 interface LasaScanViewProps {}
 
 const LasaScanView: React.FC<LasaScanViewProps> = (props) => {
   const [barCodedata, setBarCodeData] = useState<string>("-");
+  const [showWarning, setShowWarning] = useState<boolean>(true);
 
   const backgroundRef = useRef<HTMLDivElement>(null);
   const [isScanning, setIsScanning] = useState<boolean>(false);
@@ -25,6 +26,9 @@ const LasaScanView: React.FC<LasaScanViewProps> = (props) => {
 
   return (
     <>
+      {showWarning ? (
+        <WarningModal show={showWarning} setShow={setShowWarning} />
+      ) : null}
       <div
         ref={backgroundRef}
         style={{ backgroundColor: "#ADD8E6", height: "100vh" }}
