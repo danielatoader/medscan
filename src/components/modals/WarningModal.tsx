@@ -19,20 +19,20 @@ const WarningModal: React.FC<WarningModalProps> = (props) => {
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title>LASA medication</Modal.Title>
+          <Modal.Title>LASA identified!</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Be careful! This medication often gets mixed up
+          Be careful, this medication often gets mixed up
           <br />
           <br />
           <b>Please double check.</b>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="success" onClick={handleClose}>
-            Understood
+            I double checked
           </Button>
           <Button variant="danger">
-            What do I do?
+            Help
           </Button>
         </Modal.Footer>
       </Modal>
