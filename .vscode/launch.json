@@ -1,0 +1,23 @@
+// {
+//     "version": "0.2.0",
+//     "configurations": [
+//         {
+//             "name": "Python: Flask",
+//             "type": "python",
+//             "request": "launch",
+//             "program": "api/application.py",
+//             "console": "integratedTerminal",
+//             "env": {
+//                 "FLASK_APP": "api/application.py",
+//                 "FLASK_ENV": "development",
+//                 "FLASK_DEBUG": "0"
+//             },
+//             "args": [
+//                 "run"
+//                 // "--no-debugger",
+//                 // "--no-reload"
+//             ],
+//             "jinja": true
+//         }
+//     ]
+// }
