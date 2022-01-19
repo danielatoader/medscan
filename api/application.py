@@ -73,14 +73,14 @@ def get_patients():
 def check_lasa():
     """
     Checks if the medication is LASA.
-    Example route: http://localhost:5000/check_lasa?medicationName=
+    Example route: http://localhost:5000/check_lasa?medicationName=ARALEN
     """
     medication_name = request.args.get("medicationName")
     result = dict()
     result['clusters'] = LASAClusters.compute_clusters()
     result['name'] = medication_name
-    result['isLASA'] = bool(medication_name.lower() in str(result['clusters']))
-    return jsonify(result['isLASA'])
+    result['isLASA'] = bool(medication_name.lower() in str(result['clusters']).lower())
+    return jsonify({"medicationName" : medication_name, "isLASA" : result['isLASA']})
 
 @app.route('/check_patient_medication', methods=['GET'])
 def check_patient():
@@ -102,4 +102,4 @@ def check_patient():
     for med in patient.meds:
         meds.append(med.id)
 
-    return jsonify(bool(given_medication.id in meds))
+    return jsonify({"medicationName" : given_medication.name, "patientName" : patient.name, "isCorrectlyAssigned" : bool(given_medication.id in meds)})
