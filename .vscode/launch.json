@@ -5,10 +5,10 @@
 //             "name": "Python: Flask",
 //             "type": "python",
 //             "request": "launch",
-//             "program": "api/application.py",
+//             "program": "application",
 //             "console": "integratedTerminal",
 //             "env": {
-//                 "FLASK_APP": "api/application.py",
+//                 "FLASK_APP": "application.py",
 //                 "FLASK_ENV": "development",
 //                 "FLASK_DEBUG": "0"
 //             },

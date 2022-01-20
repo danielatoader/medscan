@@ -1,4 +1,3 @@
-import json
 from api.db.models import Medication, Patient
 from api.ml.LASAClusters import LASAClusters
 from api.db.seeder import seed_with_predefined
@@ -9,17 +8,24 @@ from sqlalchemy import create_engine, text
 from api.db.extensions import db
 from api.db.seeder import seed_with_predefined
 from api.db.models import Patient
+from api.data import res
 import os.path
 
 """
 db4free credentials to check out the database:
-    medscdb - db name
-    medscan - username
-    medscanpwd - password
+    - https://www.db4free.net/phpMyAdmin/index.php?route=/database/structure&server=1&db=medscdb
+    - medscdb - db name
+    - medscan - username
+    - medscanpwd - password
 """
 
 """
-Start Flask app from application.py: In terminal use $env:FLASK_APP="application.py"
+Start Flask app from application.py:
+    - In terminal use $env:FLASK_APP="application.py"
+
+Start app to allow remote connection on eduroam:
+    - flask run --host=0.0.0.0
+    - http://145.94.144.227:5000/
 """
 
 app = Flask(__name__)
@@ -28,8 +34,6 @@ conn = 'mysql://medscan:medscanpwd@85.10.205.173/medscdb'
 app.config['SQLALCHEMY_DATABASE_URI'] = conn
 app.config['SECRET_KEY'] = 'df0a17bc371e1b72883f3df3cc0928dd'
 engine = create_engine(conn)
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# engine = create_engine('mysql+pymysql://med:scan@localhost/meddb')
 
 CORS(app, resources={r'/*': {'origins': '*'}})
 db.init_app(app)
@@ -77,7 +81,8 @@ def check_lasa():
     """
     medication_name = request.args.get("medicationName")
     result = dict()
-    result['clusters'] = LASAClusters.compute_clusters()
+    # result['clusters'] = LASAClusters.compute_clusters()
+    result['clusters'] = res[0]
     result['name'] = medication_name
     result['isLASA'] = bool(medication_name.lower() in str(result['clusters']).lower())
     return jsonify({"medicationName" : medication_name, "isLASA" : result['isLASA']})
