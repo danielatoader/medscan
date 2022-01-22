@@ -1,55 +1,39 @@
 {
-  "name": "medscan",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "@types/jest": "^26.0.15",
-    "@types/node": "^12.0.0",
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
-    "bootstrap": "^5.1.3",
-    "flask": "^0.2.10",
-    "https-localhost": "^4.7.0",
-    "react": "^16.13.0",
-    "react-bootstrap": "^2.0.3",
-    "react-device-detect": "^2.1.2",
-    "react-dom": "^16.13.0",
-    "react-qr-barcode-scanner": "^1.0.6",
-    "react-qr-reader": "^2.2.1",
-    "react-router-dom": "^6.0.2",
-    "react-scripts": "4.0.3",
-    "typescript": "^4.1.2",
-    "web-vitals": "^1.0.1"
-  },
+  "name": "medscan-native",
+  "version": "1.0.0",
+  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "set HTTPS=true&&set SSL_CRT_FILE=certification/server.cert&&set SSL_KEY_FILE=certification/server.key&&react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "eject": "expo eject"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "dependencies": {
+    "@react-navigation/bottom-tabs": "^6.0.9",
+    "@react-navigation/native": "^6.0.6",
+    "@react-navigation/native-stack": "^6.2.5",
+    "expo": "~44.0.0",
+    "expo-av": "^10.2.0",
+    "expo-barcode-scanner": "~11.2.0",
+    "expo-haptics": "~11.1.0",
+    "expo-status-bar": "^1.2.0",
+    "lottie-ios": "3.2.3",
+    "lottie-react-native": "^5.0.1",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "react-native": "0.64.3",
+    "react-native-safe-area-context": "3.3.2",
+    "react-native-screens": "~3.10.1",
+    "react-native-svg": "^12.1.1",
+    "react-native-swipe-gestures": "^1.0.5",
+    "react-native-web": "0.17.1"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "proxy": "http://localhost:5000",
   "devDependencies": {
-    "@types/react-qr-reader": "^2.1.4"
-  }
+    "@babel/core": "^7.12.9",
+    "@types/react": "~17.0.21",
+    "@types/react-native": "~0.64.12",
+    "typescript": "~4.3.5"
+  },
+  "private": true
 }
