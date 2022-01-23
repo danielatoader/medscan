@@ -1,6 +1,7 @@
 interface MedicationData {
-  name: string;
-  lasa: boolean;
+  medicationName: string;
+  isLasa: boolean;
+  random_cluster_members: string[];
 }
 
 export default MedicationData;

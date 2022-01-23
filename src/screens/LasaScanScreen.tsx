@@ -21,56 +21,53 @@ const LasaScanScreen: React.FC = ({ navigation }) => {
     type: "",
     bounds: undefined,
   });
+  const [medData, setMedData] = useState<MedicationData | undefined>(undefined);
   const [tutorialVisible, setTutorialVisible] = useState(true);
   const [lasaWarningVisible, setLasaWarningVisible] = useState(false);
   const okSound = new Audio.Sound();
   const lasaSound = new Audio.Sound();
 
-  const medData = useMemo<MedicationData | undefined>(() => {
-    if (!scanData.bounds) return undefined;
-    else {
-      API.getMedication(scanData.data).then(
-        (med) => {
-          handleMedData(med);
-          return med;
-        },
-        (err) => {
-          setScanning(false);
-          Alert.alert(
-            "Error",
-            "This code was not recognized",
-            [
-              {
-                text: "Try again",
-                style: "cancel",
-                onPress: () => setScanning(true),
-              },
-            ],
+  const requestMedData = (s: ScanData) => {
+    API.checkLasa(s.data).then(
+      (med) => {
+        setMedData(med);
+      },
+      (err) => {
+        setScanning(false);
+        Alert.alert(
+          "Error",
+          "This code was not recognized",
+          [
             {
-              cancelable: true,
-              onDismiss: () => setScanning(true),
-            }
-          );
-          return undefined;
-        }
-      );
-    }
-  }, [scanData]);
+              text: "Try again",
+              style: "cancel",
+              onPress: () => setScanning(true),
+            },
+          ],
+          {
+            cancelable: true,
+            onDismiss: () => setScanning(true),
+          }
+        );
+      }
+    );
+  };
 
-  const handleMedData = (medData: MedicationData) => {
-    userFeedback(medData.lasa);
-    if (!tutorialVisible && medData.lasa) {
+  useEffect(() => {
+    if (!medData) return;
+    userFeedback(medData.isLasa);
+    if (!tutorialVisible && medData.isLasa) {
       setLasaWarningVisible(true);
       setScanning(false);
     }
-  };
+  }, [medData]);
 
   const userFeedback = (lasa: boolean) => {
+    animateOverlay();
     if (lasa) {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
     } else {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      okSound.playAsync();
     }
     playSound(lasa);
   };
@@ -89,7 +86,7 @@ const LasaScanScreen: React.FC = ({ navigation }) => {
       Promise.all([
         BarCodeScanner.requestPermissionsAsync(),
         Audio.requestPermissionsAsync(),
-      ]).catch(() => console.log("Oop"));
+      ]).catch((e) => console.log(e));
     })();
 
     return () => {
@@ -114,13 +111,13 @@ const LasaScanScreen: React.FC = ({ navigation }) => {
     data,
     bounds,
   }) => {
-    if (scanData.data === data) return;
-    setTimeout(() => {
-      setScanData({ data: "", type: "", bounds: undefined });
-    }, 1000);
+    if (scanData.bounds) return;
     setScanData({ bounds: bounds, data: data, type: type });
+    requestMedData({ bounds: bounds, data: data, type: type });
+    setTimeout(() => {
+      setScanData({ data: data, type: type, bounds: undefined });
+    }, 2000);
     animateBounds();
-    animateOverlay();
   };
 
   const fadeOutBounds = useRef(new Animated.Value(1)).current;
@@ -157,8 +154,8 @@ const LasaScanScreen: React.FC = ({ navigation }) => {
             setLasaWarningVisible(false);
             setScanning(true);
           }}
-          medName={medData.name}
-          similarNames={["blabo", "obanouch", "nadida", "brequel", "davidd"]}
+          medName={medData.medicationName}
+          similarNames={medData.random_cluster_members}
           type={scanData.type}
           medCode={scanData.data}
         />
@@ -201,23 +198,38 @@ const LasaScanScreen: React.FC = ({ navigation }) => {
               styles.overlay,
               {
                 opacity: fadeOutOverlay,
-                backgroundColor: medData.lasa ? "red" : "green",
+                backgroundColor: medData.isLasa ? "red" : "green",
               },
             ]}
           />
         ) : null}
+
         {medData ? (
           <View
             style={[
               styles.explanation,
-              { backgroundColor: medData.lasa ? "crimson" : "lightgreen" },
+              { backgroundColor: medData.isLasa ? "crimson" : "lightgreen" },
             ]}
           >
-            <Text>Last scanned:</Text>
-            <Text style={styles.text}>{medData.name}</Text>
+            <Text style={{ color: medData.isLasa ? "white" : "black" }}>
+              Last scanned:
+            </Text>
+            <Text
+              style={[
+                styles.text,
+                { color: medData.isLasa ? "white" : "black" },
+              ]}
+            >
+              {medData.medicationName}
+            </Text>
             <View style={styles.separator} />
-            <Text style={{ fontSize: 20 }}>
-              {medData.lasa ? "" : "NOT"} LASA
+            <Text
+              style={{
+                color: medData.isLasa ? "white" : "black",
+                fontSize: 20,
+              }}
+            >
+              {medData.isLasa ? "" : "NOT"} LASA
             </Text>
           </View>
         ) : null}

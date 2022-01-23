@@ -32,7 +32,7 @@ const LasaDetectedModal: React.FC<LasaDetectedModalProps> = (props) => {
           <Text style={{ fontSize: 25 }}>
             <Text style={styles.boldWhite}>{props.medName} </Text>
             <Text>has been labeled </Text>
-            <Text style={styles.boldWhite}>LASA </Text>
+            <Text style={[styles.boldWhite, {color: "gold"}]}>LASA </Text>
             <Text>by our AI{"\n\n"}</Text>
 
             <Text style={styles.boldWhite}>{props.medName} </Text>
