@@ -100,7 +100,7 @@ def check_patient():
     try:
         patient = Patient.query.filter_by(id=p_id).one()
     except BaseException as err:
-        print(f"Unexpected {err=}, {type(err)=}")
+        print(f"Unexpected {err}, {type(err)}")
         raise 
     
     meds = []
