@@ -18,8 +18,7 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "NSCameraUsageDescription": "blabla",
-        "UIViewControllerBasedStatusBarAppearance": "YES"
+        "NSCameraUsageDescription": "blabla"
       }
     },
     "android": {
