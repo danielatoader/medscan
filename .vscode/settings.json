@@ -1,5 +1,8 @@
 {
     "python.analysis.extraPaths": [
         "./api/venv/Lib/site-packages"
-    ]
+    ],
+    "files.exclude": {
+        "node_modules": true
+    }
 }
