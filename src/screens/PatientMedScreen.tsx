@@ -57,7 +57,7 @@ const PatientMedScreen: React.FC = ({ navigation }) => {
     navigation.setOptions({
       headerLeft: () => <InfoButton onPress={() => setTutorial(true)} />,
       headerRight: () => (
-        <HistoryButton onPress={() => navigation.navigate("History")} />
+        <HistoryButton onPress={() => navigation.navigate("History", {lasaScan: false})} />
       ),
       headerTitle: () => <NetworkStatus />,
     });

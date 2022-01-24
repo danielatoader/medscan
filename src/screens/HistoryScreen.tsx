@@ -2,11 +2,20 @@ import React, { useMemo, useState } from "react";
 import { Text, StyleSheet, FlatList, View, ListRenderItem } from "react-native";
 import BackButton from "../components/header_icons/BackButton";
 import { StatusBar } from "expo-status-bar";
-import history, { HistoryItem } from "../history";
+import {
+  lasa_history,
+  LasaHistoryItem,
+  patient_med_history,
+  PatientMedHistoryItem,
+} from "../history";
 
 //@ts-ignore
-const HistoryScreen: React.FC = ({ navigation }) => {
-  const [items, setItems] = useState<HistoryItem[]>([]);
+const HistoryScreen: React.FC = ({ route, navigation }) => {
+  const { lasaScan } = route.params;
+  const history = lasaScan ? lasa_history : patient_med_history;
+  const [items, setItems] = useState<
+    LasaHistoryItem[] | PatientMedHistoryItem[]
+  >(history);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -18,43 +27,78 @@ const HistoryScreen: React.FC = ({ navigation }) => {
     setItems(history);
   }, [history]);
 
-  const renderItem: ListRenderItem<HistoryItem> = ({ item }) => (
-    <View
-      style={[
-        styles.item,
-        { backgroundColor: item.medData.isLasa ? "crimson" : "lightgreen" },
-      ]}
-    >
-      <Text style={{ color: item.medData.isLasa ? "white" : "black" }}>
-        {item.timestamp}
-      </Text>
-      <View style={{ height: 10 }} />
-      <Text
+  const renderLasaItem: ListRenderItem<LasaHistoryItem> = ({ item }) => {
+    return (
+      <View
         style={[
-          styles.itemText,
-          { color: item.medData.isLasa ? "white" : "black" },
+          styles.item,
+          { backgroundColor: item.medData.isLasa ? "crimson" : "lightgreen" },
         ]}
       >
-        {item.medData.medicationName}
-      </Text>
-      <View style={{ height: 10 }} />
-      <Text style={{ color: item.medData.isLasa ? "white" : "black" }}>
-        p. code: {item.code} ({item.type})
-      </Text>
-    </View>
-  );
+        <Text style={{ color: item.medData.isLasa ? "white" : "black" }}>
+          {item.timestamp}
+        </Text>
+        <View style={{ height: 10 }} />
+        <Text
+          style={[
+            styles.itemText,
+            { color: item.medData.isLasa ? "white" : "black" },
+          ]}
+        >
+          {item.medData.medicationName}
+        </Text>
+        <View style={{ height: 10 }} />
+        <Text style={{ color: item.medData.isLasa ? "white" : "black" }}>
+          p. code: {item.code} ({item.type})
+        </Text>
+      </View>
+    );
+  };
+  const renderPatientMedItem: ListRenderItem<PatientMedHistoryItem> = ({
+    item,
+  }) => {
+    return (
+      <View
+        style={[
+          styles.item,
+          { backgroundColor: item.match ? "lightgreen" : "cremson" },
+        ]}
+      >
+        <Text style={{ color: item.match ? "black" : "white" }}>
+          {item.timestamp}
+        </Text>
+        <View style={{ height: 10 }} />
+        <Text
+          style={[styles.itemText, { color: item.match ? "black" : "white" }]}
+        >
+          {item.medName + "\n" + item.patientName}
+        </Text>
+      </View>
+    );
+  };
 
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
-      <FlatList
-        ListEmptyComponent={NothingToShow}
-        data={history}
-        renderItem={renderItem}
-        keyExtractor={(item: HistoryItem, index) =>
-          item.medData.medicationName + String(index)
-        }
-      />
+      {lasaScan ? (
+        <FlatList
+          ListEmptyComponent={NothingToShow}
+          data={history as LasaHistoryItem[]}
+          renderItem={renderLasaItem}
+          keyExtractor={(item: LasaHistoryItem, index) =>
+            item.timestamp + String(index)
+          }
+        />
+      ) : (
+        <FlatList
+          ListEmptyComponent={NothingToShow}
+          data={history as PatientMedHistoryItem[]}
+          renderItem={renderPatientMedItem}
+          keyExtractor={(item: PatientMedHistoryItem, index) =>
+            item.timestamp + String(index)
+          }
+        />
+      )}
     </View>
   );
 };
