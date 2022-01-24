@@ -61,45 +61,59 @@ const HistoryScreen: React.FC = ({ route, navigation }) => {
       <View
         style={[
           styles.item,
-          { backgroundColor: item.match ? "lightgreen" : "cremson" },
+          { backgroundColor: item.match ? "lightgreen" : "crimson" },
         ]}
       >
         <Text style={{ color: item.match ? "black" : "white" }}>
           {item.timestamp}
         </Text>
         <View style={{ height: 10 }} />
+
+        <Text style={{ color: item.match ? "black" : "white" }}>med. </Text>
         <Text
           style={[styles.itemText, { color: item.match ? "black" : "white" }]}
         >
-          {item.medName + "\n" + item.patientName}
+          {item.medName}
+        </Text>
+
+        <View style={{ height: 10 }} />
+
+        <Text style={{ color: item.match ? "black" : "white" }}>pat. </Text>
+        <Text
+          style={[styles.itemText, { color: item.match ? "black" : "white" }]}
+        >
+          {item.patientName}
         </Text>
       </View>
     );
   };
 
   return (
-    <View style={styles.container}>
-      <StatusBar style="dark" />
-      {lasaScan ? (
-        <FlatList
-          ListEmptyComponent={NothingToShow}
-          data={history as LasaHistoryItem[]}
-          renderItem={renderLasaItem}
-          keyExtractor={(item: LasaHistoryItem, index) =>
-            item.timestamp + String(index)
-          }
-        />
-      ) : (
-        <FlatList
-          ListEmptyComponent={NothingToShow}
-          data={history as PatientMedHistoryItem[]}
-          renderItem={renderPatientMedItem}
-          keyExtractor={(item: PatientMedHistoryItem, index) =>
-            item.timestamp + String(index)
-          }
-        />
-      )}
-    </View>
+    <>
+      <View style={styles.container}>
+        <StatusBar style="dark" />
+        {lasaScan ? (
+          <FlatList
+            ListEmptyComponent={NothingToShow}
+            data={history as LasaHistoryItem[]}
+            renderItem={renderLasaItem}
+            keyExtractor={(item: LasaHistoryItem, index) =>
+              item.timestamp + String(index)
+            }
+          />
+        ) : (
+          <FlatList
+            ListEmptyComponent={NothingToShow}
+            data={history as PatientMedHistoryItem[]}
+            renderItem={renderPatientMedItem}
+            keyExtractor={(item: PatientMedHistoryItem, index) =>
+              item.timestamp + String(index)
+            }
+          />
+        )}
+      </View>
+      <View style={{ height: 15 }} />
+    </>
   );
 };
 
@@ -130,6 +144,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
     alignItems: "center",
+    textAlign: "center",
   },
   itemText: {
     fontWeight: "bold",

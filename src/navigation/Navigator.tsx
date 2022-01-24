@@ -64,14 +64,14 @@ const TabNavigator: React.FC = () => {
         headerTitle: "",
       })}
     >
-      {/* <Tab.Screen
+      <Tab.Screen
         options={{
           headerTransparent: true,
           unmountOnBlur: true,
         }}
         name={lasaName}
         component={LasaScanScreen}
-      /> */}
+      />
       <Tab.Screen
         options={{ headerTransparent: true, unmountOnBlur: true }}
         name={patientMedName}

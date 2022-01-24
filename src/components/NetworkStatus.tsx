@@ -24,6 +24,7 @@ const NetworkStatus: React.FC = () => {
   };
 
   useEffect(() => {
+    check();
     const loop = window.setInterval(check, 4000);
 
     return () => window.clearInterval(loop);
