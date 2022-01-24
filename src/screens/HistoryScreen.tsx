@@ -1,34 +1,35 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { Text, StyleSheet, FlatList, View, ListRenderItem } from "react-native";
 import BackButton from "../components/header_icons/BackButton";
-import { StatusBar } from 'expo-status-bar';
-
-interface HistoryItem {
-  medName: string;
-  lasa: boolean;
-  code: string;
-  type: string;
-}
-
-const DATA: HistoryItem[] = [
-  { medName: "Nils", lasa: false, code: "79261219h0s", type: "qr-s"},
-  { medName: "Ethan", lasa: true, code: "380273283-0ie", type: "EAN-127" },
-  { medName: "Ael", lasa: false, code: "deodhed920ud0n849d4d2084", type: "sm-2"},
-];
+import { StatusBar } from "expo-status-bar";
+import history, { HistoryItem } from "../history";
 
 //@ts-ignore
 const HistoryScreen: React.FC = ({ navigation }) => {
+  const [items, setItems] = useState<HistoryItem[]>([]);
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => <BackButton onPress={() => navigation.goBack()} />,
     });
   }, [navigation]);
 
+  useMemo(() => {
+    setItems(history);
+  }, [history]);
+
   const renderItem: ListRenderItem<HistoryItem> = ({ item }) => (
-    <View style={[styles.item, { backgroundColor: item.lasa ? "crimson" : "lightgreen" }]}>
-      <Text style={styles.itemText}>{item.medName}</Text>
-      <View style={{height: 10}}/>
-      <Text>p. code: {item.code} ({item.type})</Text>
+    <View
+      style={[
+        styles.item,
+        { backgroundColor: item.medData.isLasa ? "crimson" : "lightgreen" },
+      ]}
+    >
+      <Text style={styles.itemText}>{item.medData.medicationName}</Text>
+      <View style={{ height: 10 }} />
+      <Text>
+        p. code: {item.code} ({item.type})
+      </Text>
     </View>
   );
 
@@ -36,9 +37,11 @@ const HistoryScreen: React.FC = ({ navigation }) => {
     <View style={styles.container}>
       <StatusBar style="dark" />
       <FlatList
-        data={DATA}
+        data={history}
         renderItem={renderItem}
-        keyExtractor={(item: HistoryItem) => item.medName}
+        keyExtractor={(item: HistoryItem, index) =>
+          item.medData.medicationName + String(index)
+        }
       />
     </View>
   );
@@ -62,12 +65,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    alignItems: "center"
+    alignItems: "center",
   },
   itemText: {
     fontWeight: "bold",
-    fontSize: 20
-  }
-})
+    fontSize: 20,
+  },
+});
 
 export default HistoryScreen;

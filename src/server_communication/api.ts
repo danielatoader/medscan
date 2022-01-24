@@ -20,6 +20,10 @@ class API {
   public static async checkLasa(code: string): Promise<MedicationData> {
     return this.request(endpoints.checkLasa, {medicationCode: code})
   }
+
+  public static async checkNetwork(): Promise<string> {
+    return this.request(endpoints.baseUrl, {})
+  }
 }
 
 export default API;

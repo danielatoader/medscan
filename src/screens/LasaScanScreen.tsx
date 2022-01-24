@@ -12,6 +12,8 @@ import MedicationData from "../models/MedicationData";
 import ScanData from "../models/ScanData";
 import API from "../server_communication/api";
 import { Audio } from "expo-av";
+import NetworkStatus from "../components/NetworkStatus";
+import history from "../history";
 
 //@ts-ignore
 const LasaScanScreen: React.FC = ({ navigation }) => {
@@ -31,6 +33,7 @@ const LasaScanScreen: React.FC = ({ navigation }) => {
     API.checkLasa(s.data).then(
       (med) => {
         setMedData(med);
+        history.push({medData: med, code: s.data, type: s.type});
       },
       (err) => {
         setScanning(false);
@@ -78,6 +81,7 @@ const LasaScanScreen: React.FC = ({ navigation }) => {
       headerRight: () => (
         <LasaScanHistoryIcon onPress={() => navigation.navigate("History")} />
       ),
+      headerTitle: () => <NetworkStatus />,
     });
   }, [navigation]);
 
