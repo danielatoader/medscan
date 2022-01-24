@@ -29,7 +29,7 @@ const Navigator: React.FC<NavigatorProps> = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {/* <Stack.Screen name="Splash" component={SplashScreen} /> */}
+        <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen
           options={{ gestureEnabled: false, animation: "fade_from_bottom" }}
           name="TabNavigator"
