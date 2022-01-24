@@ -12,7 +12,7 @@ import ScanData from "../models/ScanData";
 import API from "../server_communication/api";
 import { Audio } from "expo-av";
 import NetworkStatus from "../components/NetworkStatus";
-import history from "../history";
+import {lasa_history} from "../history";
 import HistoryButton from "../components/header_icons/HistoryButton";
 
 //@ts-ignore
@@ -33,7 +33,7 @@ const LasaScanScreen: React.FC = ({ navigation }) => {
     API.checkLasa(s.data).then(
       (med) => {
         setMedData(med);
-        history.unshift({
+        lasa_history.unshift({
           medData: med,
           code: s.data,
           type: s.type,
