@@ -25,9 +25,20 @@ const HistoryScreen: React.FC = ({ navigation }) => {
         { backgroundColor: item.medData.isLasa ? "crimson" : "lightgreen" },
       ]}
     >
-      <Text style={styles.itemText}>{item.medData.medicationName}</Text>
+      <Text style={{ color: item.medData.isLasa ? "white" : "black" }}>
+        {item.timestamp}
+      </Text>
       <View style={{ height: 10 }} />
-      <Text>
+      <Text
+        style={[
+          styles.itemText,
+          { color: item.medData.isLasa ? "white" : "black" },
+        ]}
+      >
+        {item.medData.medicationName}
+      </Text>
+      <View style={{ height: 10 }} />
+      <Text style={{ color: item.medData.isLasa ? "white" : "black" }}>
         p. code: {item.code} ({item.type})
       </Text>
     </View>
@@ -37,12 +48,21 @@ const HistoryScreen: React.FC = ({ navigation }) => {
     <View style={styles.container}>
       <StatusBar style="dark" />
       <FlatList
+        ListEmptyComponent={NothingToShow}
         data={history}
         renderItem={renderItem}
         keyExtractor={(item: HistoryItem, index) =>
           item.medData.medicationName + String(index)
         }
       />
+    </View>
+  );
+};
+
+const NothingToShow: React.FC = () => {
+  return (
+    <View style={styles.nothing}>
+      <Text style={styles.nothingText}>No history yet.</Text>
     </View>
   );
 };
@@ -70,6 +90,17 @@ const styles = StyleSheet.create({
   itemText: {
     fontWeight: "bold",
     fontSize: 20,
+  },
+  nothing: {
+    width: "100%",
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  nothingText: {
+    fontWeight: "bold",
+    fontSize: 20,
+    color: "grey",
   },
 });
 

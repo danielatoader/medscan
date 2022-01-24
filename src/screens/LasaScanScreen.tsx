@@ -4,16 +4,16 @@ import { Text, StyleSheet, View, Animated, Alert } from "react-native";
 import * as Haptics from "expo-haptics";
 import LasaScanTutorial from "../components/modals/LasaScanTutorial";
 import React from "react";
-import LasaInfoIcon from "../components/header_icons/LasaInfoButton";
+import InfoButton from "../components/header_icons/InfoButton";
 import Svg, { Path } from "react-native-svg";
 import LasaDetectedModal from "../components/modals/LasaDetectedModal";
-import LasaScanHistoryIcon from "../components/header_icons/LasaScanHistoryIcon";
 import MedicationData from "../models/MedicationData";
 import ScanData from "../models/ScanData";
 import API from "../server_communication/api";
 import { Audio } from "expo-av";
 import NetworkStatus from "../components/NetworkStatus";
 import history from "../history";
+import HistoryButton from "../components/header_icons/HistoryButton";
 
 //@ts-ignore
 const LasaScanScreen: React.FC = ({ navigation }) => {
@@ -33,7 +33,12 @@ const LasaScanScreen: React.FC = ({ navigation }) => {
     API.checkLasa(s.data).then(
       (med) => {
         setMedData(med);
-        history.push({medData: med, code: s.data, type: s.type});
+        history.unshift({
+          medData: med,
+          code: s.data,
+          type: s.type,
+          timestamp: new Date().toUTCString(),
+        });
       },
       (err) => {
         setScanning(false);
@@ -77,9 +82,9 @@ const LasaScanScreen: React.FC = ({ navigation }) => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerLeft: () => <LasaInfoIcon onPress={() => setTutorial(true)} />,
+      headerLeft: () => <InfoButton onPress={() => setTutorial(true)} />,
       headerRight: () => (
-        <LasaScanHistoryIcon onPress={() => navigation.navigate("History")} />
+        <HistoryButton onPress={() => navigation.navigate("History")} />
       ),
       headerTitle: () => <NetworkStatus />,
     });

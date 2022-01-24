@@ -40,7 +40,7 @@ const Navigator: React.FC<NavigatorProps> = () => {
             gestureEnabled: false,
             headerShown: true,
             headerTitle: "Scan history",
-            headerTintColor: "tomato"
+            headerTintColor: "tomato",
           }}
           name="History"
           component={HistoryScreen}
@@ -64,14 +64,19 @@ const TabNavigator: React.FC = () => {
         headerTitle: "",
       })}
     >
-      <Tab.Screen
+      {/* <Tab.Screen
         options={{
           headerTransparent: true,
+          unmountOnBlur: true,
         }}
         name={lasaName}
         component={LasaScanScreen}
+      /> */}
+      <Tab.Screen
+        options={{ headerTransparent: true, unmountOnBlur: true }}
+        name={patientMedName}
+        component={PatientMedScreen}
       />
-      <Tab.Screen name={patientMedName} component={PatientMedScreen} />
     </Tab.Navigator>
   );
 };

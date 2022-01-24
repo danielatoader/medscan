@@ -4,6 +4,7 @@ export interface HistoryItem {
   medData: MedicationData;
   code: string;
   type: string;
+  timestamp: string;
 }
 
 const history: HistoryItem[] = [];

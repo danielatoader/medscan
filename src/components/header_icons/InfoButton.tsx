@@ -1,11 +1,11 @@
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import Icon from "@expo/vector-icons/Ionicons";
 
-interface LasaInfoIconProps {
+interface InfoButtonProps {
   onPress: () => void;
 }
 
-const LasaInfoIcon: React.FC<LasaInfoIconProps> = (props) => {
+const InfoButton: React.FC<InfoButtonProps> = (props) => {
   return (
     <View style={styles.icon}>
       <TouchableOpacity onPress={props.onPress}>
@@ -28,4 +28,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LasaInfoIcon;
+export default InfoButton;

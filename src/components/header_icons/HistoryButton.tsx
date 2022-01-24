@@ -1,11 +1,11 @@
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import Icon from "@expo/vector-icons/Ionicons";
 
-interface LasaScanHistoryIconProps {
+interface HistoryButtonProps {
   onPress: () => void;
 }
 
-const LasaScanHistoryIcon: React.FC<LasaScanHistoryIconProps> = (props) => {
+const HistoryButton: React.FC<HistoryButtonProps> = (props) => {
   return (
     <View style={styles.icon}>
       <TouchableOpacity onPress={props.onPress}>
@@ -30,4 +30,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LasaScanHistoryIcon;
+export default HistoryButton;
