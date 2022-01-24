@@ -1,0 +1,176 @@
+acetoHEXAMIDE
+acetaZOLAMIDE
+busPIRone
+buPROPion
+chlorproPAMIDE
+chlorproMAZINE
+clomiPRAMINE
+clomiPHENE
+cycloSPORINE
+cycloSERINE
+DOXOrubicin
+diphenhydrAMINE
+dimenhyDRINATE
+DOPamine
+DOBUTamine
+DAUNOrubicin
+glyBURIDE
+glipiZIDE
+hydrOXYzine – HYDROmorphone
+hydrOXYzine — hydrALAZINE
+hydrALAZINE – HYDROmorphone
+methylPREDNISolone - methylTESTOSTERone
+medroxyPROGESTERone - methylTESTOSTERone
+medroxyPROGESTERone - methylPREDNISolone
+Not specified
+NIFEdipine
+niCARdipine
+predniSONE
+prednisoLONE
+rOPINIRole
+risperiDONE
+sulfiSOXAZOLE
+sulfADIAZINE
+TOLBUTamide
+TOLAZamide
+vinCRIStine
+vinBLAStine
+LORazepam — clonazePAM
+amLODIPine
+aMILoride
+RABEprazole
+INVanz*
+azaTHIOprine
+azaCITIDine
+OXcarbazepine
+CISplatin
+cefoTEtan — cefOXitin — cefTAZidime — cefTRIAXone
+ceFAZolin — cefOXitin — cefTAZidime — cefTRIAXone
+ceFAZolin — cefoTEtan — cefTAZidime — cefTRIAXone
+ceFAZolin — cefoTEtan — cefOXitin — cefTRIAXone
+ceFAZolin - cefoTEtan – cefOXitin – cefTAZidime
+CeleXA*
+CeleBREX*
+chlorproMAZINE**
+chlordiazePOXIDE
+CARBOplatin
+clonazePAM
+cloNIDine — cloZAPine — cloBAZam — LORazepam
+clonazePAM – cloZAPine — KlonoPIN*
+clonazePAM — cloNIDine
+DAPTOmycin
+DACTINomycin
+SOLU-Medrol*
+dilTIAZem
+diazePAM
+PACLitaxel
+IDArubicin
+FLUoxetine — PARoxetine
+EPINEPHrine
+ePHEDrine
+eriBULin
+epiRUBicin
+SUFentanil
+fluvoxaMINE
+DULoxetine — PARoxetine
+fluvoxaMINE
+fluPHENAZine - flavoxATE
+guanFACINE
+guaiFENesin
+HumuLIN*
+HumaLOG*
+hydroCHLOROthiazide – hydrOXYzine**
+hydrOXYzine** — hydrALAZINE**
+oxyCODONE
+morphine — oxyMORphone
+medroxyPROGESTERone**
+hydrALAZINE** — hydroCHLOROthiazide
+DOXOrubicin** – idaruCIZUmab
+IDArubicin
+riTUXimab
+AVINza*
+tretinoin
+cloNIDine
+LamISIL*
+LaMICtal*
+lamoTRIgine
+lamiVUDine
+levOCARNitine — levoFLOXacin
+levETIRAcetam
+levETIRAcetam
+leucovorin
+ALPRAZolam — clonazePAM
+HYDROXYprogesterone
+metroNIDAZOLE
+methIMAzole — metOLazone
+metOLazone – methazolAMIDE
+methIMAzole — methazolAMIDE
+metFORMIN
+metyroSINE
+metyraPONE
+miSOPROStol
+miFEPRIStone
+mitoXANTRONE**
+mitoMYcin
+NexIUM*
+NexAVAR*
+niMODipine – NIFEdipine**
+niMODipine — niCARdipine**
+NIFEdipine** – niCARdipine**
+NovoLOG*
+NovoLIN*
+QUEtiapine
+carBAMazepine
+HYDROcodone — OxyCONTIN*– oxyMORphone
+oxyCODONE – oxyMORphone
+HYDROmorphone** — oxyCODONE – OxyCONTIN*
+DOCEtaxel
+FLUoxetine — DULoxetine
+PONATinib
+PRALAtrexate
+penicillin
+PHENobarbital
+PENTobarbital
+PAZOPanib
+PEMEtrexed
+PROzac*
+PriLOSEC*
+OLANZapine
+quiNINE
+quiNIDine
+ARIPiprazole
+riMANTAdine
+rifAXIMin
+rifAMPin
+raNITIdine
+rOPINIRole**
+rOPINIRole**
+inFLIXimab
+romiPLOStim
+romiDEPsin
+RisperDAL*— risperiDONE**
+SandoSTATIN*
+SandIMMUNE*
+SITagliptin
+SINEquan*
+SEROquel*
+sAXagliptin — SUMAtriptan
+SOLU-Medrol*
+Solu-CORTEF* — DEPO-Medrol*
+SUNItinib
+fentaNYL
+sulfaSALAzine
+sulfADIAZINE**
+SITagliptin — ZOLMitriptan
+SORAfenib
+TRENtal*
+tiZANidine
+tiaGABine
+traZODone
+traMADol
+TEGretol*
+valGANciclovir
+valACYclovir
+SUMAtriptan
+ZyrTEC*
+ZyPREXA*
