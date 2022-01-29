@@ -83,14 +83,16 @@ def check_lasa():
     Example route: http://localhost:5000/check_lasa?medicationName=epiRUBicin
     """
     medication_name = request.args.get("medicationName")
-    result = dict()
-    result['clusters'] = LASAClusters.compute_clusters()
-    result['clusters'] = [cluster.lower() for cluster in result['clusters']]
-    # result['clusters'] = res[0]
-    result['name'] = medication_name
-    result['isLASA'] = bool(medication_name.lower() in result['clusters'])
-    # return json.dumps(result['clusters'])
-    return json.dumps({"medicationName" : medication_name, "isLASA" : result['isLASA']})
+    clusters, all_LASA, all_clusters = LASAClusters.compute_clusters()
+    members = []
+    for cluster in clusters.values():
+        for member in cluster:
+            if medication_name.lower() == member.lower():
+                members = cluster
+                break
+    LASAs = [item.lower() for sublist in all_LASA for item in sublist]
+    isLASA = bool(medication_name.lower() in LASAs)
+    return json.dumps({"medicationName" : medication_name, "isLASA" : isLASA, "members" : list(members)})
 
 @app.route('/check_patient_medication', methods=['GET'])
 def check_patient():

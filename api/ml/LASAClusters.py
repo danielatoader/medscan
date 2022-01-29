@@ -7,16 +7,18 @@ import matplotlib.pyplot as plt
 import nltk
 from nltk.metrics.distance import edit_distance
 from tqdm.notebook import tqdm
-import sys
 import pickle
 import string
 import sys, math, random, copy
 
 class LASAClusters:
+    """Computes LASA clusters."""
 
     @staticmethod
     def compute_clusters(result=dict()):
-
+        # Calculate similarity matrix between letters
+        # Adapted from Samuelsson, made for Spotify
+        # Neighbors are currently chosen by phonetic experimentation
         current_path = str(pathlib.Path().resolve())
         df = pd.read_csv(current_path + '/ml/Products.txt', sep='\t+', engine='python')
   
@@ -28,10 +30,11 @@ class LASAClusters:
         names = np.array(drugNames)
         lasa_names = np.unique(np.loadtxt(current_path + "/ml/sa_ISMP+FDA.txt", dtype=str))
         names = np.append(lasa_names, names)
-
-        # Try edit distance between different phonetic forms
+        # names = [each_string.lower() for each_string in names]
+        
         # Calculate similarity matrix between letters
-        # https://www.diva-portal.org/smash/get/diva2:1116701/FULLTEXT01.pdf
+        # Adapted from Samuelsson, made for Spotify
+        # Neighbors are currently chosen by phonetic experimentation
         neighbors_of = {}
         neighbors_of['q'] = ['w', 'c', 'k']
         neighbors_of['w'] = ['v', 'u']
@@ -86,8 +89,9 @@ class LASAClusters:
                 for neighbor in neighbors_of[key['char']]:
                     if neighbor not in visited:
                         queue.append({'char': neighbor, 'dist': key['dist']+1})
+
         # Computes a similarity matrix for letters of the English alphabet
-        # based on keyboard distances between letters 
+        # Inspired by the keyboard distances research of Samuelsson for Spotify
         def alldists(option, verbose):          
             if option == "raw":
                 longest_dist = 0
@@ -139,25 +143,25 @@ class LASAClusters:
         del_cost = 4
 
         def edit_distance_dp(seq1, seq2):
-            # there is no difference between upper and lower case for this application    
+            # There is no difference between upper and lower case for this application    
             seq1 = seq1.lower()
             seq2 = seq2.lower()
             
-            # create an empty 2D matrix to store cost
+            # Create an empty 2D matrix to store cost
             cost = np.zeros((len(seq1)+1, len(seq2)+1))
             
-            # fill the first row
+            # Fill the first row
             cost[0] = [i for i in range(len(seq2)+1)]
             
-            # fill the first column
+            # Fill the first column
             cost[:, 0] = [i for i in range(len(seq1)+1)]
             
-            # now, iterate over earch row and column
+            # Iterate over earch row and column
             for row in range(1, len(seq1)+1):
                 
                 for col in range(1, len(seq2)+1):
                     
-                    # if both the characters are same then the cost will be same as 
+                    # If both the characters are same then the cost will be same as 
                     # the cost of the previous sub-sequence
                     if seq1[row-1] == seq2[col-1]:
                         cost[row][col] = cost[row-1][col-1]
@@ -166,15 +170,16 @@ class LASAClusters:
                         insertion_cost = cost[row][col-1] + ins_cost
                         deletion_cost = cost[row-1][col] + del_cost
                         substitution_cost = cost[row-1][col-1] + similarity_dict_all[seq1[row-1]][seq2[col-1]]
+        #                 print(f"sim for {seq1[row-1]} and {seq2[col-1]}: {similarity_dict_all[seq1[row-1]][seq2[col-1]]}")
                         
-                        # calculate the minimum cost
+                        # Calculate the minimum cost
                         cost[row][col] = min(insertion_cost, deletion_cost, substitution_cost)
-
+                        
             return cost[len(seq1), len(seq2)]
-        
+
         # Levenshtein distance
         # n = len(names)
-        n = 300
+        n = 100
         lev_dist = np.zeros((n, n))
         lev_sim = np.zeros((n, n))
 
@@ -182,25 +187,26 @@ class LASAClusters:
             for j in range(i+1, n):
                 ni = names[i]
                 nj = names[j]
-                # dist, operations = edit_distance_dp(ni, nj)
                 dist = edit_distance_dp(ni, nj)
                 lev_dist[i, j] = dist
                 lev_dist[j, i] = dist
-
-        file_path = current_path + '/ml/new_lev_dist1000.pickle'
-        # pickle.dump(lev_dist, open(file_path, "wb"))
+                
+        file_path = 'lev_dist.pickle'
+        pickle.dump(lev_dist, open(file_path, "wb"))
         # lev_dist = pickle.load(open(file_path, "rb"))
 
         # Distance to similarity
         lev_sim = 1 / (1 + lev_dist)
 
         # Cluster on computed similarities
-        aff_prop = AffinityPropagation(affinity="precomputed", damping=0.96,max_iter = 1000, verbose=True)
+        aff_prop = AffinityPropagation(affinity="precomputed", damping=0.96,max_iter = 10000, verbose=True)
         aff_prop.fit(lev_sim)
         print(f'Found {len(aff_prop.cluster_centers_indices_)} clusters.')
 
-        clusters = []
+        clusters = dict()
+        all_clusters = dict()
         all_LASA = []
+        t=7
         for cluster_id in range(len(aff_prop.cluster_centers_indices_)):
             exemplar = names[aff_prop.cluster_centers_indices_[cluster_id]]
             member_ind = np.nonzero(aff_prop.labels_ == cluster_id)
@@ -209,17 +215,21 @@ class LASAClusters:
             # For each member (member index) of the cluster, check if it is similar enough to the rest     
             for member in member_ind[0]:
                 for datapoint in range(len(lev_dist)):
-                    # Omit the point itself and it does not have distances below 10, remove it, probably not LASA
-                    if (member != datapoint and lev_dist[member][datapoint] < 6):
+                    # Omit the distance to the point itself and if it does not have distances below threshold,
+                    # remove it, probably not LASA
+                    if (member != datapoint and lev_dist[member][datapoint] < t):
                         most_similar_members.add(names[member])
+                most_similar_members.add(exemplar)
                         
-            if most_similar_members:
-                clusters.append({str(cluster_id) : most_similar_members})
+            if len(most_similar_members) > 1:
+                clusters[cluster_id] = most_similar_members
                 all_LASA.append(list(most_similar_members))
-                print(f'\033[1m{exemplar}\033[0m ({len(most_similar_members)} most similar from {len(members)} total): {", ".join(most_similar_members)}')  
-        
-        # Flatten the list for easy LASA check
-        flat_list = [item for sublist in all_LASA for item in sublist]
-        print(flat_list)
+                print(f'\033[1m{exemplar}\033[0m ({len(most_similar_members)} most similar from {len(members)} total): {", ".join(most_similar_members)}')
 
-        return flat_list
+            all_clusters[cluster_id] = members
+
+        # Flatten the list for easy LASA check
+        LASAs = [item for sublist in all_LASA for item in sublist]
+        print(len(LASAs))
+
+        return clusters, all_LASA, all_clusters
