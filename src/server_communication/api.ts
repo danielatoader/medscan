@@ -1,28 +1,46 @@
 import MedicationData from "../models/MedicationData";
 import * as endpoints from "../endpoints";
+import PatientMedData from "../models/PatientMedData";
 
 class API {
-	private static paramsToQueryString(params: Object) {
-		//@ts-ignore
-		return Object.keys(params).map(key => key + '=' + params[key]).join('&');
-	}
+  private static paramsToQueryString(params: Object) {
+    //@ts-ignore
+    return Object.keys(params)
+      .map((key) => key + "=" + params[key])
+      .join("&");
+  }
 
-	private static async request<T>(endpoint: string, params: Object): Promise<T> {
-    let response: Response = await fetch(endpoint + "?" + this.paramsToQueryString(params));
+  private static async request<T>(
+    endpoint: string,
+    params: Object
+  ): Promise<T> {
+    let response: Response = await fetch(
+      endpoint + "?" + this.paramsToQueryString(params)
+    );
 
     if (response.status >= 200 && response.status < 300) {
       return response.json();
     } else {
       return Promise.reject(new Error(response.statusText));
     }
-	}
+  }
 
   public static async checkLasa(code: string): Promise<MedicationData> {
-    return this.request(endpoints.checkLasa, {medicationCode: code})
+    return this.request(endpoints.checkLasa, { medicationCode: code });
+  }
+
+  public static async patientMedMatch(
+    patient: string,
+    medication: string
+  ): Promise<PatientMedData> {
+    return this.request(endpoints.patientMedMatch, {
+      patient: patient,
+      medication: medication,
+    });
   }
 
   public static async checkNetwork(): Promise<string> {
-    return this.request(endpoints.baseUrl, {})
+    return this.request(endpoints.baseUrl, {});
   }
 }
 

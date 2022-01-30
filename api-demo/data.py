@@ -37,3 +37,35 @@ for i, med in enumerate(meds):
     medication_code_map[97182630832753 + 2 * i] = med
 
 print(medication_code_map)
+
+patients = [
+    "Nelson Mandela",
+    "Barack Obama",
+    "Ethan Keller",
+    "Mas Volkers",
+    "Roisin Bonis",
+    "Daniela Toader",
+    "Helen Keller",
+    "Jacky Chan",
+    "Will Smith",
+    "Johnny Depp",
+]
+
+patient_code_map = dict()
+for i, patient in enumerate(patients):
+    patient_code_map[193623 + 2 * i] = patient
+
+print(patient_code_map)
+
+patient_medications = {
+    "Nelson Mandela": ["Femara"],
+    "Barack Obama": [],
+    "Ethan Keller": ["Amitriptyline", "Zestoretic"],
+    "Mas Volkers": [],
+    "Roisin Bonis": ["Ferrous"],
+    "Daniela Toader": ["Faslodex", "Sulfate"],
+    "Helen Keller": ["Prednisolone"],
+    "Jacky Chan": ["Nifedipine", "Prednisolone"],
+    "Will Smith": ["arxiga"],
+    "Johnny Depp": [],
+}

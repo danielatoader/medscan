@@ -29,7 +29,6 @@ class SplashScreen extends React.Component<SplashProps, SplashState> {
       }),
       { iterations: 3 }
     ).start(({ finished }) => {
-      console.log(finished);
       this.props.navigation.navigate("TabNavigator");
     });
   }
