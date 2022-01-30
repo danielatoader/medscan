@@ -1,3 +1,4 @@
+import os
 import pathlib
 import pandas as pd
 import numpy as np
@@ -28,7 +29,7 @@ class LASAClusters:
         drugNames.iloc[random_incides]
         
         names = np.array(drugNames)
-        lasa_names = np.unique(np.loadtxt(current_path + "/ml/sa_ISMP+FDA.txt", dtype=str))
+        lasa_names = np.unique(np.loadtxt(current_path + "/ml/lists_LASA/sa_ISMP+FDA.txt", dtype=str))
         names = np.append(lasa_names, names)
         # names = [each_string.lower() for each_string in names]
         
@@ -177,23 +178,27 @@ class LASAClusters:
                         
             return cost[len(seq1), len(seq2)]
 
-        # Levenshtein distance
-        # n = len(names)
-        n = 100
-        lev_dist = np.zeros((n, n))
-        lev_sim = np.zeros((n, n))
+        file_path = current_path + '/ml/lev_dist.pickle'
 
-        for i in tqdm(range(n)):
-            for j in range(i+1, n):
-                ni = names[i]
-                nj = names[j]
-                dist = edit_distance_dp(ni, nj)
-                lev_dist[i, j] = dist
-                lev_dist[j, i] = dist
-                
-        file_path = 'lev_dist.pickle'
-        pickle.dump(lev_dist, open(file_path, "wb"))
-        # lev_dist = pickle.load(open(file_path, "rb"))
+        if os.path.isfile(file_path):
+            lev_dist = pickle.load(open(file_path, "rb"))
+
+        else:
+            # Levenshtein distance
+            # n = len(names)
+            n = 1000
+            lev_dist = np.zeros((n, n))
+            lev_sim = np.zeros((n, n))
+
+            for i in tqdm(range(n)):
+                for j in range(i+1, n):
+                    ni = names[i]
+                    nj = names[j]
+                    dist = edit_distance_dp(ni, nj)
+                    lev_dist[i, j] = dist
+                    lev_dist[j, i] = dist
+                    
+            pickle.dump(lev_dist, open(file_path, "wb"))
 
         # Distance to similarity
         lev_sim = 1 / (1 + lev_dist)
@@ -227,9 +232,5 @@ class LASAClusters:
                 print(f'\033[1m{exemplar}\033[0m ({len(most_similar_members)} most similar from {len(members)} total): {", ".join(most_similar_members)}')
 
             all_clusters[cluster_id] = members
-
-        # Flatten the list for easy LASA check
-        LASAs = [item for sublist in all_LASA for item in sublist]
-        print(len(LASAs))
 
         return clusters, all_LASA, all_clusters
